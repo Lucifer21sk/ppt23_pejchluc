@@ -1,0 +1,15 @@
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\bin\Debug\net6.0\Example.exe
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\bin\Debug\net6.0\Example.deps.json
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\bin\Debug\net6.0\Example.runtimeconfig.json
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\bin\Debug\net6.0\Example.dll
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\bin\Debug\net6.0\Example.pdb
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\obj\Debug\net6.0\Example.csproj.AssemblyReference.cache
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\obj\Debug\net6.0\Example.GeneratedMSBuildEditorConfig.editorconfig
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\obj\Debug\net6.0\Example.AssemblyInfoInputs.cache
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\obj\Debug\net6.0\Example.AssemblyInfo.cs
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\obj\Debug\net6.0\Example.csproj.CoreCompileInputs.cache
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\obj\Debug\net6.0\Example.dll
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\obj\Debug\net6.0\refint\Example.dll
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\obj\Debug\net6.0\Example.pdb
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\obj\Debug\net6.0\Example.genruntimeconfig.cache
+D:\Cvut\ppt\ppt23_pejchluc\Example\Example\obj\Debug\net6.0\ref\Example.dll
