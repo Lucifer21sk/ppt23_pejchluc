@@ -1,0 +1,64 @@
+﻿@page "/game"
+
+@if (!IsPlaying)
+{
+    <p>Welcome to the Number Guessing Game</p>
+    <button @onclick= "StartGame">Start Game</button>
+}
+else 
+{
+    <p>I'm thinking of a number between 1 and 100. Can you guess it?</p>
+    <p>Enter your guess:</p>
+    <input type="number" @bind="@Guess"/>
+    <button @onclick="CheckGuess">Submit</button>
+    <button @onclick="EndGame">End Game</button>
+    @if (!string.IsNullOrEmpty(@Result))
+    {
+        <p>@Result</p>
+        @if (@Result.Contains("Congratulations"))
+        {
+            <button @onclick="StartGame">Play Again</button>
+        }
+    }
+}
+
+@code{
+    private bool IsPlaying = false;
+    private int RandomNumber;
+    private int Guess;
+    private string? Result;
+
+    private readonly Random random = new();
+
+    private void StartGame()
+    {
+        IsPlaying = true;
+        RandomNumber = random.Next(1, 101);
+        Guess = 0;
+        Result = null;
+    }
+
+    private void CheckGuess()
+    {
+        if (Guess < 1 || Guess > 100)
+        {
+            Result = "Invalid input. Please enter a whole number between 1 and 100";
+            return;
+        }
+
+        if (Guess == RandomNumber)
+        {
+            Result = $"Congratulations! You guessed the number {RandomNumber}.";
+        }
+        else
+        {
+            Result = Guess < RandomNumber ? "Too low. Try again." : "Too high. Try again.";
+        }
+    }
+
+    private void EndGame()
+    {
+        IsPlaying = false;
+        Result = null;
+    }
+}
