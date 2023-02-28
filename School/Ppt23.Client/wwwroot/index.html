@@ -10,10 +10,19 @@
     <link href="css/app.css" rel="stylesheet" />
     <link href="Ppt23.Client.styles.css" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="images/favicon.png" sizes="32x32">
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+    <div id="app">
+        <div style="position:absolute; top:30vh; width:100%; text-align:center">
+            <h1 class="text-4xl font-bold" style="color: #1E3D58;">Please wait</h1>
+            <div style="display:flex; gap:10px; justify-content:center; align-items:center">
+                <div class="spinner-border" role="status" style="color: #057DCD;"></div>
+                <span class="text-xl font-semibold" style="color: #43B0F1;">The application is loading...</span>
+            </div>
+        </div>
+    </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
@@ -22,5 +31,6 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
+
 
 </html>

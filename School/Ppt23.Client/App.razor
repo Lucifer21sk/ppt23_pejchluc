@@ -4,9 +4,10 @@
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(MainLayout)">
-            <p role="alert">Sorry, there's nothing at this address.</p>
-        </LayoutView>
+        <h3 class="text-center my-4">Oops! Page not found.</h3>
+        <p class="text-center">Sorry, the page you are looking for could not be found.</p>
+        <div class="text-center mt-4">
+            <a href="/" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-4">Go to Home page</a>
+        </div>
     </NotFound>
 </Router>

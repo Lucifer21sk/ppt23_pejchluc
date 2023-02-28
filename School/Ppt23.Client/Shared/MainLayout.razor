@@ -1,17 +1,15 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
+<div class="flex justify-between bg-navy-blue p-2" style="background-color: #1E3D58;">
+    <div>
+        <a href="/" class="font-bold text-lg text-white" style="color: #FFFFFF;">Home</a>
     </div>
+    <div>
+        <NavLink href="/game" class="mr-4 text-white hover:text-royal-blue" style="color: #FFFFFF;">Game</NavLink>
+        <NavLink class="text-white hover:text-royal-blue" href="/hospital-equipment">Hospital Equipment</NavLink>
+    </div>
+</div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
+<div class="container mx-auto" style="background-color: #057DCD; padding-top: 1rem;border-bottom: 19px solid #057DCD;">
+    @Body
 </div>
