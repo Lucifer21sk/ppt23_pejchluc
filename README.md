@@ -1,2 +1,1 @@
-# ppt23_pejchluc
-School 
+My App (https://localhost:7125/)
