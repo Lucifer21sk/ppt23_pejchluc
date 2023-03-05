@@ -23,7 +23,7 @@ jobs:
     - name: Nastavení .NET # stáhneme a nastavíme dotnet (není součástí základní instalace ubuntu)
       uses: actions/setup-dotnet@v1 #externí "action", její zdroják je https://github.com/actions/setup-dotnet
       with:
-        dotnet-version: 6.0.X #verze
+        dotnet-version: 6.x.x #verze
     - name: Publish with dotnet #do určené složky publikuje aplikace, v release configuraci
       run: dotnet publish School/Ppt23.Client/Ppt23.Client.sln --configuration Release --output ${{env.PUBLISH_DIR}}
       # ☝️ Upravte dle názvu vašeho .sln
