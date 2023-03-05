@@ -11,4 +11,11 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.14" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Pages\**\*.cshtml;Pages\**\*.razor">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Exclude>Pages\SomePageToExclude.razor</Exclude>
+    </Content>
+  </ItemGroup>
+
 </Project>
