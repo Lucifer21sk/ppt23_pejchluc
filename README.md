@@ -1,1 +1,1 @@
-My App (https://localhost:7125/)
+My App (https://lucifer21sk.github.io/ppt23_pejchluc/)
