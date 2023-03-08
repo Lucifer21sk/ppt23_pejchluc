@@ -1,0 +1,20 @@
+﻿@using Ppt23.Client.ViewModels
+<div class="grid grid-cols-5 gap-4 p-2 px-1 py-1 @((Equi.IsRevisionNeeded) ? "bg-red-200" : "")">
+    <div class="p-2">@Equi.Name</div>
+    <div class="p-2 text-center">@Equi.BoughtDateTime.ToShortDateString()</div>
+    <div class="p-2 text-center">@Equi.LastRevisionDateTime.ToShortDateString()</div>
+    <div class="p-2 text-center">@((Equi.IsRevisionNeeded) ? "Yes" : "No")</div>
+    <div class="flex justify-center">
+    <button class="border rounded bg-teal-500 text-white text-sm px-2" @onclick="() => OnDelete.InvokeAsync(Equi)">Delete</button>
+    <button class="border rounded bg-teal-700 text-white text-sm px-2 ml-2" @onclick="() => OnPerformRevision.InvokeAsync(Equi)">Perform Revision</button>
+    </div>
+
+</div>
+
+@code {
+
+    [Parameter] public EquipmentVm Equi { get; set; }
+    [Parameter] public EventCallback<EquipmentVm> OnDelete { get; set; }
+    [Parameter] public EventCallback<EquipmentVm> OnPerformRevision { get; set; }
+}
+

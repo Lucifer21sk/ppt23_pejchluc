@@ -1,7 +1,33 @@
 ﻿@page "/hospital-equipment"
+@using Ppt23.Client.ViewModels
+@using Ppt23.Client.Components
 
-<h2>Will be added soon</h2>
+<h2 class="text-3xl font-bold mb-4">Hospital Equipment</h2>
+
+<div class="container mx-auto bg-neutral-200 p-4 px-4 py-4">
+    <div class=" bg-green-200 grid grid-cols-5 gap-2 py-1">
+        <div class="font-bold text-sm ml-2">Name</div>
+        <div class="font-bold text-sm text-center">Bought Date</div>
+        <div class="font-bold text-sm text-center">Last Revision Date</div>
+        <div class="font-bold text-sm text-center">Revision Needed</div>
+        <div></div>
+    </div>
+
+        @foreach (var equipment in listEquipment)
+        {
+            <div class="col-span-5">
+            <EquipmentRow Equi="@equipment" OnDelete="() => listEquipment.Remove(equipment)" OnPerformRevision="() => equipment.LastRevisionDateTime = DateTime.Today" />
+            </div>
+        }
+    
+</div>
 
 @code {
+    List<EquipmentVm> listEquipment;
+
+    public HospitalEquipment()
+    {
+        listEquipment = EquipmentVm.RtnRndList(10);
+    }
 
 }
