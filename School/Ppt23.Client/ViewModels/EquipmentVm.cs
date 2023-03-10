@@ -42,6 +42,12 @@
             return list;
         }
 
+        public static List<EquipmentVm> RtnRndList()
+        {
+            var rand = new Random();
+            var count = rand.Next(1, 20);
+            return RtnRndList(count);
+        }
 
     }
 
