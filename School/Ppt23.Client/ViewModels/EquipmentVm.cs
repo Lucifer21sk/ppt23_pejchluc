@@ -6,6 +6,7 @@
         public DateTime BoughtDateTime { get; set; }
         public DateTime LastRevisionDateTime { get; set; }
         public bool IsRevisionNeeded { get => (DateTime.Now - LastRevisionDateTime).TotalDays > 730; }
+        public bool IsInEditMode { get; set; } 
 
 
         public static List<EquipmentVm> RtnRndList(int count)
@@ -48,7 +49,6 @@
             var count = rand.Next(1, 20);
             return RtnRndList(count);
         }
-
     }
 
 
