@@ -1,27 +1,25 @@
 ﻿@using Ppt23.Client.ViewModels
-<div class="grid grid-cols-5 gap-4 p-2 px-1 py-1 @((Equi.IsRevisionNeeded) ? "bg-red-200" : "")">
+<div class="grid grid-cols-6 gap-4 p-2 px-1 py-1 @((Equi.IsRevisionNeeded) ? "bg-red-200" : "")">
     @if (Equi != null && !Equi.IsInEditMode)
     {
         <div class="p-2">@Equi.Name</div>
         <div class="p-2 text-center">@Equi.BoughtDate.ToString("yyyy-MM-dd")</div>
         <div class="p-2 text-center">@Equi.LastRevisionDate.ToString("yyyy-MM-dd")</div>
+        <div class="p-2 text-center">@Equi.PriceFormatted</div>
         <div class="p-2 text-center">@((Equi.IsRevisionNeeded) ? "Yes" : "No")</div>
         <div class="flex justify-center">
             <button class="border rounded bg-teal-500 text-white text-sm px-2" @onclick="() => OnDelete.InvokeAsync(Equi)">Delete</button>
             <button class="border rounded bg-teal-700 text-white text-sm px-2 ml-2" @onclick="() => OnPerformRevision.InvokeAsync(Equi)">Perform Revision</button>
             <button class="border rounded bg-emerald-300 text-white text-sm px-2 ml-2" @onclick="() => TurnOnEdit()">Edit</button>
         </div>
-        
-
-        
     }
     // edit mode
     else if (editingEqui != null && editingEqui.IsInEditMode)
     {
-        <EditForm class="col-span-5" Model=editingEqui OnValidSubmit="() => TurnOffEdit(true)">
+        <EditForm class="col-span-6" Model=editingEqui OnValidSubmit="() => TurnOffEdit(true)">
             <DataAnnotationsValidator />
             <ValidationSummary />
-            <div class="grid grid-cols-5 gap-4 p-2 px-1 py-1">
+            <div class="grid grid-cols-6 gap-4 p-2 px-1 py-1">
                 <div class="p-2">
                     <InputText class="border-2 border-slate-300" id="name" @bind-Value=@editingEqui.Name />
                 </div>
@@ -31,19 +29,19 @@
                 <div class="p-2 text-center">
                     <InputDate class="border-2 border-slate-300" id="lastRevisionDate" @bind-Value=@editingEqui.LastRevisionDate />
                 </div>
+                <div class="p-2 text-center">
+                    <InputNumber class="border-2 border-slate-300" id="price" @bind-Value=@editingEqui.Price min="0" max="10000000" />
+                </div>
                 <div class="p-2 text-center">@((editingEqui.IsRevisionNeeded) ? "Yes" : "No")</div>
-            
-            
                 <div class="flex justify-center">
                     <button type="submit" class="border rounded bg-teal-500 text-white text-sm px-2">Ok</button>
                     <button class="border rounded bg-teal-700 text-white text-sm px-2 ml-2" @onclick="() => TurnOffEdit(false)">Cancel</button>
                 </div>
             </div>
         </EditForm>
-
     }
-    
 </div>
+
 
 @code {
     [Parameter] public EventCallback<EquipmentVm> OnDelete { get; set; }

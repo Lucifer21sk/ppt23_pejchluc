@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 namespace Ppt23.Client.ViewModels
-{ 
+{
     public class EquipmentVm
     {
         [Required(ErrorMessage = "Name is required")]
@@ -8,17 +8,25 @@ namespace Ppt23.Client.ViewModels
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Bought date is required")]
-        [DataType(DataType.Date, ErrorMessage ="Bought date is not a valid date")]
+        [DataType(DataType.Date, ErrorMessage = "Bought date is not a valid date")]
         public DateTime BoughtDate { get; set; }
+
         [Required(ErrorMessage = "Last revision date is required")]
         [DataType(DataType.Date, ErrorMessage = "Last revision date is not a valid date")]
         [CustomValidation(typeof(EquipmentVm), nameof(ValidateLastRevisionDate))]
         public DateTime LastRevisionDate { get; set; }
-        public bool IsRevisionNeeded { get => (DateTime.Now - LastRevisionDate).TotalDays > 730; }
-        public bool IsInEditMode { get; set; } 
-        public EquipmentVm? Equi { get; set; }
-        public List<EquipmentVm> Listequipment { get; set; } = new();
 
+        [Range(0, 10000000, ErrorMessage = "Price must be between 0 and 10,000,000")]
+        public int Price { get; set; }
+        public string PriceFormatted => $"{Price:N0} kč";
+
+        public bool IsRevisionNeeded { get => (DateTime.Now - LastRevisionDate).TotalDays > 730; }
+
+        public bool IsInEditMode { get; set; }
+
+        public EquipmentVm? Equi { get; set; }
+
+        public List<EquipmentVm> Listequipment { get; set; } = new();
 
         public static List<EquipmentVm> RtnRndList(int count)
         {
@@ -45,7 +53,8 @@ namespace Ppt23.Client.ViewModels
                 {
                     Name = name,
                     BoughtDate = boughtDateTime,
-                    LastRevisionDate = lastRevisionDateTime
+                    LastRevisionDate = lastRevisionDateTime,
+                    Price = rand.Next(0, 10000001)
                 };
 
                 list.Add(equipment);
@@ -67,6 +76,7 @@ namespace Ppt23.Client.ViewModels
             eq.LastRevisionDate = LastRevisionDate;
             eq.IsInEditMode = IsInEditMode;
             eq.Name = Name;
+            eq.Price = Price;
             return eq;
         }
         public void MapTo(EquipmentVm? eq)
@@ -75,6 +85,7 @@ namespace Ppt23.Client.ViewModels
             eq.BoughtDate = BoughtDate;
             eq.LastRevisionDate = LastRevisionDate;
             eq.Name = Name;
+            eq.Price = Price;
         }
         public static ValidationResult ValidateLastRevisionDate(DateTime lastRevisionDateTime, ValidationContext validationContext)
         {
