@@ -15,12 +15,12 @@
         <div></div>
     </div>
 
-    @foreach (var equipment in listEquipment)
-    {
-        <div class="col-span-5">
-            <EquipmentRow Equi="@equipment" OnDelete="() => listEquipment.Remove(equipment)" OnPerformRevision="() => equipment.LastRevisionDateTime = DateTime.Today" />
-        </div>   
-    }
+@foreach (var equipment in listEquipment)
+{
+
+        <EquipmentRow Equi="@equipment" OnDelete="() => listEquipment.Remove(equipment)" OnPerformRevision="() => equipment.LastRevisionDate = DateTime.Today" />
+}
+
 
 </div>
 

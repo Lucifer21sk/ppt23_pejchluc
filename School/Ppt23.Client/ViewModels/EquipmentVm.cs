@@ -1,12 +1,23 @@
-﻿namespace Ppt23.Client.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+namespace Ppt23.Client.ViewModels
 { 
     public class EquipmentVm
     {
-        public string? Name { get; set; }
-        public DateTime BoughtDateTime { get; set; }
-        public DateTime LastRevisionDateTime { get; set; }
-        public bool IsRevisionNeeded { get => (DateTime.Now - LastRevisionDateTime).TotalDays > 730; }
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(12, MinimumLength = 5, ErrorMessage = "Name must be between 5 and 12 characters")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Bought date is required")]
+        [DataType(DataType.Date, ErrorMessage ="Bought date is not a valid date")]
+        public DateTime BoughtDate { get; set; }
+        [Required(ErrorMessage = "Last revision date is required")]
+        [DataType(DataType.Date, ErrorMessage = "Last revision date is not a valid date")]
+        [CustomValidation(typeof(EquipmentVm), nameof(ValidateLastRevisionDate))]
+        public DateTime LastRevisionDate { get; set; }
+        public bool IsRevisionNeeded { get => (DateTime.Now - LastRevisionDate).TotalDays > 730; }
         public bool IsInEditMode { get; set; } 
+        public EquipmentVm? Equi { get; set; }
+        public List<EquipmentVm> Listequipment { get; set; } = new();
 
 
         public static List<EquipmentVm> RtnRndList(int count)
@@ -33,8 +44,8 @@
                 var equipment = new EquipmentVm
                 {
                     Name = name,
-                    BoughtDateTime = boughtDateTime,
-                    LastRevisionDateTime = lastRevisionDateTime
+                    BoughtDate = boughtDateTime,
+                    LastRevisionDate = lastRevisionDateTime
                 };
 
                 list.Add(equipment);
@@ -49,6 +60,34 @@
             var count = rand.Next(1, 20);
             return RtnRndList(count);
         }
+        public EquipmentVm Copy()
+        {
+            EquipmentVm eq = new();
+            eq.BoughtDate = BoughtDate;
+            eq.LastRevisionDate = LastRevisionDate;
+            eq.IsInEditMode = IsInEditMode;
+            eq.Name = Name;
+            return eq;
+        }
+        public void MapTo(EquipmentVm? eq)
+        {
+            if (eq == null) return;
+            eq.BoughtDate = BoughtDate;
+            eq.LastRevisionDate = LastRevisionDate;
+            eq.Name = Name;
+        }
+        public static ValidationResult ValidateLastRevisionDate(DateTime lastRevisionDateTime, ValidationContext validationContext)
+        {
+            var equipmentVm = (EquipmentVm)validationContext.ObjectInstance;
+
+            if (lastRevisionDateTime < equipmentVm.BoughtDate)
+            {
+                return new ValidationResult("Last revision date must be equal to or after the bought date.");
+            }
+
+            return ValidationResult.Success;
+        }
+
     }
 
 
