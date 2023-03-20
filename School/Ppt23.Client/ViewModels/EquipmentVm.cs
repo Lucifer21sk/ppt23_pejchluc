@@ -15,7 +15,7 @@ namespace Ppt23.Client.ViewModels
         [DataType(DataType.Date, ErrorMessage = "Last revision date is not a valid date")]
         [CustomValidation(typeof(EquipmentVm), nameof(ValidateLastRevisionDate))]
         public DateTime LastRevisionDate { get; set; }
-
+        [Required(ErrorMessage = "Price is required")]
         [Range(0, 10000000, ErrorMessage = "Price must be between 0 and 10,000,000")]
         public int Price { get; set; }
         public string PriceFormatted => $"{Price:N0} kč";
