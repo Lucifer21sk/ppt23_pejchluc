@@ -1,32 +1,44 @@
 ﻿@page "/hospital-equipment"
-@using Ppt23.Client.ViewModels
-@using Ppt23.Client.Components
+@using Ppt23.Shared;
+@using Ppt23.Client.Components;
 
 <h2 class="text-3xl font-bold mb-4">Hospital Equipment</h2>
 
 <div class="container mx-auto bg-neutral-200 p-4 px-4 py-4 max-w-6xl">
     <div class="text-lg font-semibold mb-2">Number of Equipment: @listEquipment?.Count</div>
     <button class="bg-teal-700 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded mb-3" @onclick="CreateRandomEquipmentList">New List</button>
-    <div class=" bg-green-200 grid grid-cols-6 gap-2 py-1 px-2 max-w-8xl">
+    <button class="bg-emerald-500 hover:bg-emerald-300 text-white font-bold py-2 px-4 rounded mb-3" @onclick="()=> {newModel = new();isInNewMode = true;}"> New Item</button>
+    <div class=" bg-green-200 grid grid-cols-6 p-2 px-1 py-1">
         <div class="font-bold text-sm ml-2">Name</div>
-        <div class="font-bold text-sm text-center">Bought Date</div>
-        <div class="font-bold text-sm text-center">Last Revision Date</div>
-        <div class="font-bold text-sm text-center">Price</div>
-        <div class="font-bold text-sm text-center">Revision Needed</div>
-
-        <div></div>
+        <div class="font-bold text-sm">Bought Date</div>
+        <div class="font-bold text-sm">Last Revision Date</div>
+        <div class="font-bold text-sm">Price</div>
+        <div class="font-bold text-sm">Revision Needed</div>
+        <div class="font-bold text-sm">Actions</div>
     </div>
 
-@foreach (var equipment in listEquipment)
-{
-        <EquipmentRow Equi="@equipment" OnDelete="() => listEquipment.Remove(equipment)" OnPerformRevision="() => equipment.LastRevisionDate = DateTime.Today" />
-}
+    @if (isInNewMode)
+    {
+        ArgumentNullException.ThrowIfNull(newModel);
+
+        <EquipmentRow IsInEditMode=true Equi="newModel" EditDoneEventCallback="() => {listEquipment.Insert(0,newModel); isInNewMode = false;}">
+            <button type="submit" class="btn bg-teal-500">Add</button>
+            <button type="button" @onclick="() => isInNewMode = false" class="btn bg-teal-700 ml-2">Cancel</button>
+        </EquipmentRow>
+    }
+
+    @foreach (EquipmentVm equipment in listEquipment)
+    {
+        <EquipmentRow Equi="@equipment" OnDelete="() => listEquipment.Remove(equipment)"/>
+    }
 
 
 </div>
 
 @code {
     List<EquipmentVm> listEquipment;
+    bool isInNewMode;
+    EquipmentVm? newModel;
 
     public HospitalEquipment()
     {

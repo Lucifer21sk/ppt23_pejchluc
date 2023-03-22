@@ -1,11 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
-namespace Ppt23.Client.ViewModels
+namespace Ppt23.Shared
 {
     public class EquipmentVm
     {
+        public Guid Id { get; set; }
         [Required(ErrorMessage = "Name is required")]
         [StringLength(12, MinimumLength = 5, ErrorMessage = "Name must be between 5 and 12 characters")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [Required(ErrorMessage = "Bought date is required")]
         [DataType(DataType.Date, ErrorMessage = "Bought date is not a valid date")]
@@ -15,18 +16,13 @@ namespace Ppt23.Client.ViewModels
         [DataType(DataType.Date, ErrorMessage = "Last revision date is not a valid date")]
         [CustomValidation(typeof(EquipmentVm), nameof(ValidateLastRevisionDate))]
         public DateTime LastRevisionDate { get; set; }
+
         [Required(ErrorMessage = "Price is required")]
         [Range(0, 10000000, ErrorMessage = "Price must be between 0 and 10,000,000")]
         public int Price { get; set; }
         public string PriceFormatted => $"{Price:N0} kč";
 
         public bool IsRevisionNeeded { get => (DateTime.Now - LastRevisionDate).TotalDays > 730; }
-
-        public bool IsInEditMode { get; set; }
-
-        public EquipmentVm? Equi { get; set; }
-
-        public List<EquipmentVm> Listequipment { get; set; } = new();
 
         public static List<EquipmentVm> RtnRndList(int count)
         {
@@ -51,6 +47,7 @@ namespace Ppt23.Client.ViewModels
 
                 var equipment = new EquipmentVm
                 {
+                    Id = Guid.NewGuid(),
                     Name = name,
                     BoughtDate = boughtDateTime,
                     LastRevisionDate = lastRevisionDateTime,
@@ -74,7 +71,6 @@ namespace Ppt23.Client.ViewModels
             EquipmentVm eq = new();
             eq.BoughtDate = BoughtDate;
             eq.LastRevisionDate = LastRevisionDate;
-            eq.IsInEditMode = IsInEditMode;
             eq.Name = Name;
             eq.Price = Price;
             return eq;

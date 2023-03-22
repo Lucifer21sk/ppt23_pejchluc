@@ -12,10 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ppt23.Shared\Ppt23.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="Pages\**\*.cshtml;Pages\**\*.razor">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <Exclude>Pages\SomePageToExclude.razor</Exclude>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>
