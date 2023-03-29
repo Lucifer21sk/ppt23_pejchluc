@@ -1,0 +1,22 @@
+﻿@page "/hospital-equipment/{Id:guid}"
+@inject HttpClient Http
+@using Ppt23.Shared
+
+<h3>EquipmentDetail</h3>
+<div>
+    <p><strong>ID:</strong> @equipment?.Id</p>
+    <p><strong>Name:</strong> @equipment?.Name</p>
+    <p><strong>Bought Date:</strong> @equipment?.BoughtDate.ToString("yyyy-MM-dd")</p>
+    <p><strong>Last Revision Date:</strong> @equipment?.LastRevisionDate.ToString("yyyy-MM-dd")</p>
+    <p><strong>Price:</strong> @equipment?.PriceFormatted</p>
+</div>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    EquipmentVm? equipment;
+
+    protected override async Task OnInitializedAsync()
+    {
+        equipment = await Http.GetFromJsonAsync<EquipmentVm>($"hospital-equipment/{Id}");
+    }
+}

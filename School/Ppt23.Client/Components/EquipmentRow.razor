@@ -69,7 +69,8 @@ else if (equipment != null)
     [Parameter] public EventCallback<EquipmentVm> EditDoneEventCallback { get; set; }
 
 
-    private void OnValidSubmit()
+
+    private async Task OnValidSubmit()
     {
         ArgumentNullException.ThrowIfNull(equipment);
         IsInEditMode = false;
@@ -77,7 +78,7 @@ else if (equipment != null)
         Equi.BoughtDate = equipment.BoughtDate;
         Equi.LastRevisionDate = equipment.LastRevisionDate;
         Equi.Price = equipment.Price;
-        EditDoneEventCallback.InvokeAsync();
+        await EditDoneEventCallback.InvokeAsync(Equi);
     }
 
     void EnableEditMode()
