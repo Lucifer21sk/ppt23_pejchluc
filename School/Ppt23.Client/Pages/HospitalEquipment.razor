@@ -8,7 +8,7 @@
 <div class="container mx-auto bg-neutral-200 p-4 px-4 py-4 max-w-6xl">
     <div class="text-lg font-semibold mb-2">Number of Equipment: @listEquipment?.Count</div>
     <!--<button class="bg-teal-700 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded mb-3>New List</button>-->
-    <button class="bg-emerald-500 hover:bg-emerald-300 text-white font-bold py-2 px-4 rounded mb-3" @onclick="()=> {newModel = new();isInNewMode = true;}"> New Item</button>
+    <button class="bg-emerald-500 hover:bg-emerald-300 text-white font-bold py-2 px-4 rounded mb-3" @onclick="()=> {newModel = EquipmentVm.RtnRndList(1).First();isInNewMode = true;}"> New Item</button>
     <div class=" bg-green-200 grid grid-cols-6 p-2 px-1 py-1">
         <div class="font-bold text-sm ml-2">Name</div>
         <div class="font-bold text-sm">Bought Date</div>
@@ -37,14 +37,15 @@
 </div>
 
 @code {
-        bool isInNewMode;
-        EquipmentVm? newModel;
-        List<EquipmentVm> listEquipment = new List<EquipmentVm>();
+    bool isInNewMode;
+    EquipmentVm? newModel;
+    List<EquipmentVm> listEquipment = new List<EquipmentVm>();
 
     protected override async Task OnInitializedAsync()
     {
         listEquipment = await Http.GetFromJsonAsync<List<EquipmentVm>>("/hospital-equipment") ?? new List<EquipmentVm>();
     }
+
 
     private async Task DeleteEquipment(EquipmentVm equipment)
     {
