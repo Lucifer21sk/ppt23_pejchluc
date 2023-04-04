@@ -1,0 +1,38 @@
+﻿@page "/revision/{SearchText}"
+@using Ppt23.Shared
+@inject HttpClient Http
+
+<h1 class="text-green-500">@SearchText</h1>
+<div class="mt-4">
+    <input type="text" @bind="searchInput" class="border-2 border-slate-300 px-2 py-1" />
+    <button class="bg-emerald-500 hover:bg-emerald-300 text-white font-bold py-2 px-4 rounded" @onclick="Search">Search</button>
+</div>
+<div class="mt-4">
+    @if (filteredEquipment != null)
+    {
+        <ul>
+            @foreach (var item in filteredEquipment)
+            {
+
+                <li>@item.Name @item.Id </li>
+            }
+        </ul>
+    }
+</div>
+
+@code {
+    [Parameter] public string SearchText { get; set; } = "hello-people";
+    private string searchInput = "";
+    private List<EquipmentVm> allEquipment = new List<EquipmentVm>();
+    private List<EquipmentVm> filteredEquipment;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //allEquipment = await Http.GetFromJsonAsync
+    }
+
+    private void Search()
+    {
+        
+    }
+}

@@ -29,12 +29,17 @@ app.UseHttpsRedirection();
 
 
 List<EquipmentVm> list = EquipmentVm.RtnRndList(10);
+List<RevisionVm> list1 = RevisionVm.RtnRndListRevisions(10);
 
 
 //get the list
 app.MapGet("/hospital-equipment", () =>
 {
     return list;
+});
+app.MapGet("/hello-people", () =>
+{
+    return list1;
 });
 
 //new item in list, with Id
