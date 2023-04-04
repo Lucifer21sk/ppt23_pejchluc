@@ -11,10 +11,10 @@ namespace Ppt23.Shared
 
     public class RevisionVm
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         public string Name { get; set; }
 
-        public static List<RevisionVm> RtnRndListRevisions(int count)
+        public static List<RevisionVm> GenerateRandomRevisions(int count)
         {
             var rand = new Random();
             var list = new List<RevisionVm>();
@@ -30,12 +30,7 @@ namespace Ppt23.Shared
                     name += randomChar;
                 }
 
-                var boughtDateTime = new DateTime(2010, 1, 1).AddDays(rand.Next(1, (DateTime.Now - new DateTime(2010, 1, 1)).Days));
-
-                var lastRevisionDays = rand.Next(1, (DateTime.Now - boughtDateTime).Days);
-                var lastRevisionDateTime = boughtDateTime.AddDays(lastRevisionDays);
-
-                var equipment = new EquipmentVm
+                var equipment = new RevisionVm
                 {
                     Id = Guid.NewGuid(),
                     Name = name,

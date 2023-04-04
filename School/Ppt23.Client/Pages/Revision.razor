@@ -5,7 +5,7 @@
 <h1 class="text-green-500">@SearchText</h1>
 <div class="mt-4">
     <input type="text" @bind="searchInput" class="border-2 border-slate-300 px-2 py-1" />
-    <button class="bg-emerald-500 hover:bg-emerald-300 text-white font-bold py-2 px-4 rounded" @onclick="Search">Search</button>
+    <button class="bg-teal-700 hover:bg-teal-500 text-white font-bold py-2 px-4 rounded" @onclick="Search">Search</button>
 </div>
 <div class="mt-4">
     @if (filteredEquipment != null)
@@ -14,25 +14,27 @@
             @foreach (var item in filteredEquipment)
             {
 
-                <li>@item.Name @item.Id </li>
+                <li>Name: @item.Name, Id: @item.Id</li>
             }
         </ul>
     }
 </div>
 
 @code {
-    [Parameter] public string SearchText { get; set; } = "hello-people";
+    [Parameter] public string SearchText { get; set; }
     private string searchInput = "";
-    private List<EquipmentVm> allEquipment = new List<EquipmentVm>();
-    private List<EquipmentVm> filteredEquipment;
+    private List<RevisionVm> allEquipment = new List<RevisionVm>();
+    private List<RevisionVm> filteredEquipment;
 
     protected override async Task OnInitializedAsync()
     {
-        //allEquipment = await Http.GetFromJsonAsync
+        allEquipment = await Http.GetFromJsonAsync<List<RevisionVm>>($"/revision/{SearchText}");
     }
 
-    private void Search()
+    private async void Search()
     {
-        
+        filteredEquipment = await Http.GetFromJsonAsync<List<RevisionVm>>($"/revision/{searchInput}");
+        StateHasChanged();
     }
 }
+

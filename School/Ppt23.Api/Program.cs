@@ -29,7 +29,7 @@ app.UseHttpsRedirection();
 
 
 List<EquipmentVm> list = EquipmentVm.RtnRndList(10);
-List<RevisionVm> list1 = RevisionVm.RtnRndListRevisions(10);
+List<RevisionVm> list1 = RevisionVm.GenerateRandomRevisions(10);
 
 
 //get the list
@@ -37,9 +37,11 @@ app.MapGet("/hospital-equipment", () =>
 {
     return list;
 });
-app.MapGet("/hello-people", () =>
+
+
+app.MapGet("/revision/{SearchText}", (string SearchText) =>
 {
-    return list1;
+    return list1.Where(revision => revision.Name.Contains(SearchText)).ToList();
 });
 
 //new item in list, with Id
