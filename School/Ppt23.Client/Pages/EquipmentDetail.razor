@@ -9,6 +9,11 @@
     <p><strong>Bought Date:</strong> @equipment?.BoughtDate.ToString("yyyy-MM-dd")</p>
     <p><strong>Last Revision Date:</strong> @equipment?.LastRevisionDate.ToString("yyyy-MM-dd")</p>
     <p><strong>Price:</strong> @equipment?.PriceFormatted</p>
+
+</div>
+
+<div class="mt-4">
+    <NavLink href="/hospital-equipment" class="bg-teal-700 text-white font-bold py-2 px-4 rounded mt-3">Back</NavLink>
 </div>
 
 @code {
@@ -19,4 +24,5 @@
     {
         equipment = await Http.GetFromJsonAsync<EquipmentVm>($"hospital-equipment/{Id}");
     }
+
 }
