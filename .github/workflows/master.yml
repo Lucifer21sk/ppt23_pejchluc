@@ -35,14 +35,6 @@ jobs:
     - name: Publish with dotnet #do určené složky publikuje aplikace, v release configuraci
       run: dotnet publish  ${{ env.LATEST_FOLDER }}/Ppt23.Client/Ppt23.Client.csproj --configuration Release --output ${{env.PUBLISH_DIR}}
       # ☝️ Upravte dle názvu vašeho .sln
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-          app-name: 'ppt23-pejchluc'
-          slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_149216E4ABF7441EBDB923AB95194FB0 }}
-          package: .
     # změní tag base v index.html from '/' na 'ppt_22' což je gh page k tomuto repu
     - name: Change base-tag in index.html from to your gh repo
       run: sed -i 's/<base href="\/" \/>/<base href="\/ppt23_pejchluc\/" \/>/g' ${{env.PUBLISH_DIR}}/wwwroot/index.html
