@@ -7,10 +7,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(policy =>
-    policy.WithOrigins(builder.Configuration["AllowedOrigins"])
-    .WithMethods("GET", "POST", "DELETE", "PUT")
-    .AllowAnyHeader()
-));
+{
+    var allowedOrigins = builder.Configuration["AllowedOrigins"];
+    if (allowedOrigins != null)
+    {
+        policy.WithOrigins(allowedOrigins)
+              .WithMethods("DELETE", "GET", "PUT", "POST")
+              .AllowAnyHeader();
+    }
+}));
 
 
 
