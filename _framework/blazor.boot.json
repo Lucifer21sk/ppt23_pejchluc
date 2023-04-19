@@ -1,6 +1,10 @@
 {
   "cacheBootResources": true,
-  "config": [ ],
+  "config": [
+    "appsettings.Development.json",
+    "appsettings.json",
+    "appsettings.Production.json"
+  ],
   "debugBuild": false,
   "entryAssembly": "Ppt23.Client",
   "icuDataMode": 0,
@@ -10,9 +14,9 @@
       "Microsoft.AspNetCore.Components.dll": "sha256-ZesUXl4IBhV9xKB7YpMuv4AB5SPhmbO+gzS\/ZI2HR2c=",
       "Microsoft.AspNetCore.Components.Forms.dll": "sha256-VQI01sL3NilFJ0SGgSERWzRLIqfaz\/41\/P0F0h04qUk=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-\/deLp6KiCPhilJKT50ryT5yQhnSqvKSD70bvqISOIDQ=",
-      "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-x4+\/pZXjkNBQqbcA7m5p+JunfgSK\/Cx+98jKVElBUd8=",
-      "Microsoft.Extensions.Configuration.Abstractions.dll": "sha256-yNUivmV4a48Mkbc1Sz+XJ9Y8moJKjWJo6Z0haFMFrKQ=",
-      "Microsoft.Extensions.Configuration.dll": "sha256-OWH+xkIa4nRWGQutqm7dxgAY22jFGJlC+P6RzpDPrBE=",
+      "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-1UJRB0DweCO2PBIg7mehgjr+bg+79eBJdcNNFVRiNsU=",
+      "Microsoft.Extensions.Configuration.Abstractions.dll": "sha256-0yWt1k7kS8lArmghOxNAVG48EWt8hKxKokGY+wKjm5c=",
+      "Microsoft.Extensions.Configuration.dll": "sha256-UtruPnZEk3o6\/LuqS8P2sUzj3hN9k8Se5VGJg9DSkf8=",
       "Microsoft.Extensions.Configuration.Json.dll": "sha256-boSewHLerYdMMQk1EahIMSbAXSrf7Kgky4CGjZ3uuto=",
       "Microsoft.Extensions.DependencyInjection.Abstractions.dll": "sha256-zt1\/jssBgnZqpT4nHD9iLuyzBYsDruV\/mWVd+U65qTQ=",
       "Microsoft.Extensions.DependencyInjection.dll": "sha256-azTt1JLi4RL0qaUPW8um+3BlO1IxYfZUaUP+kmJ6E6Y=",
@@ -22,7 +26,7 @@
       "Microsoft.Extensions.Primitives.dll": "sha256-Kk9trPYi6xuop+bJh7AertZVcNJkEyzyxW3andlyf5U=",
       "Microsoft.JSInterop.dll": "sha256-PWHWkLWWN96AC9lrT5ZwQ96A1zpWjZR+ymy1xCRLBAA=",
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-oDCYZQkxe9vICogDOy6yp6ZwuqR1Mq5TF\/kqJHc6zPI=",
-      "Ppt23.Client.dll": "sha256-k3Ul5mt8arr1HDjvpI66woU54Gcpz3moS3fDEzTnDKQ=",
+      "Ppt23.Client.dll": "sha256-ITPUIohrRccPwNTSQN6OtvnBZbNGuWOxdXeUtwNeqNw=",
       "Ppt23.Shared.dll": "sha256-ieTWlm5Fah+YsGGIudy7E9QKxQN3tnvoN0wgekSQGbU=",
       "System.Collections.Concurrent.dll": "sha256-ieYbMYHXHjhm2\/hCSBP+JDyg7tZ3BX3w8JtrCAoKCt4=",
       "System.Collections.dll": "sha256-9UOygKgH9W7vwIViZmiqp3kibYByXktzsWR5ta8AfRg=",
