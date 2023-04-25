@@ -1,6 +1,11 @@
+using Mapster;
+using Microsoft.EntityFrameworkCore;
+using Ppt23.Api.Data;
 using Ppt23.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<PptDbContext>(opt => opt.UseSqlite("FileName=Hospital.db")); 
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -16,24 +21,6 @@ builder.Services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(policy =>
 }));
 
 
-/* var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-builder.Services.AddCors(options =>
-{
-
-    var allowedOrigins = builder.Configuration["AllowedOrigins"];
-    if (allowedOrigins != null)
-    {
-        options.AddPolicy(MyAllowSpecificOrigins,
-                        policy =>
-                        {
-                            policy.WithOrigins(allowedOrigins)
-                                .AllowAnyHeader()
-                                .WithMethods("DELETE", "GET", "PUT", "POST");
-                        });
-    }
-}); */
-
-
 var app = builder.Build();
 app.UseCors();
 
@@ -47,46 +34,51 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-
-List<EquipmentVm> list = EquipmentVm.RtnRndList(10);
-List<RevisionVm> list1 = RevisionVm.GenerateRandomRevisions(10);
-
-
 //get the list
-app.MapGet("/hospital-equipment", () =>
+app.MapGet("/hospital-equipment", (PptDbContext _db) =>
 {
-    return list;
+    var equipmentList = _db.Equipment.ToList();
+    var equipmentVmList = equipmentList.Adapt<List<EquipmentVm>>();
+    return equipmentVmList;
 });
 
 
-app.MapGet("/revision/{SearchText}", (string SearchText) =>
+//revision
+app.MapGet("/revision/{SearchText}", (string SearchText, PptDbContext db) =>
 {
-    return list1.Where(revision => revision.Name.Contains(SearchText)).ToList();
+    var list1 = db.Revisions.ToList();
+    var revisions = list1.Where(r => r.Name.Contains(SearchText)).Adapt<List<RevisionVm>>();
+    return Results.Ok(revisions);
 });
+
 
 //new item in list, with Id
-app.MapPost("/hospital-equipment", (EquipmentVm equipment) =>
+app.MapPost("/hospital-equipment", (EquipmentVm equipmentVm, PptDbContext _db) =>
 {
-    equipment.Id = Guid.NewGuid();
-    list.Insert(0, equipment);
-    return Results.Created($"/hospital-equipment/{equipment.Id}", equipment);
+    var equipment = equipmentVm.Adapt<Equipment>();
+    equipment.Id = Guid.Empty;
+    _db.Equipment.Add(equipment);
+    _db.SaveChanges();
+    return Results.Created($"/hospital-equipment/{equipment.Id}", equipment.Adapt<EquipmentVm>());
 });
 
+
 //delete item from list, need Id
-app.MapDelete("/hospital-equipment/{Id}", (Guid Id) =>
+app.MapDelete("/hospital-equipment/{Id}", (Guid Id, PptDbContext _db) =>
 {
-    var item = list.SingleOrDefault(x => x.Id == Id);
+    var item = _db.Equipment.SingleOrDefault(x => x.Id == Id);
     if (item == null)
         return Results.NotFound("This Item cannot be found!");
-    list.Remove(item);
+    _db.Equipment.Remove(item);
+    _db.SaveChanges();
     return Results.Ok();
-}
-);
+});
+
 
 //edit item in list, need Id
-app.MapPut("/hospital-equipment/{Id}", (Guid Id, EquipmentVm updatedEquipment) =>
+app.MapPut("/hospital-equipment/{Id}", (Guid Id, EquipmentVm updatedEquipment, PptDbContext _db) =>
 {
-    var item = list.SingleOrDefault(x => x.Id == Id);
+    var item = _db.Equipment.SingleOrDefault(x => x.Id == Id);
     if (item == null)
     {
         return Results.NotFound("This item cannot be found!");
@@ -94,20 +86,24 @@ app.MapPut("/hospital-equipment/{Id}", (Guid Id, EquipmentVm updatedEquipment) =
     else
     {
         updatedEquipment.Id = Id; //same Id
-        list.Remove(item);
-        list.Insert(0, updatedEquipment);
+        var en = updatedEquipment.Adapt<Equipment>();
+        _db.Entry(item).CurrentValues.SetValues(en);
+        _db.SaveChanges();
         return Results.Ok();
     }
 });
 
+
 //get only specific item from list, need Id
-app.MapGet("/hospital-equipment/{Id}", (Guid Id) =>
+app.MapGet("/hospital-equipment/{Id}", (Guid Id, PptDbContext _db) =>
 {
-    var item = list.SingleOrDefault(x => x.Id == Id);
+    var item = _db.Equipment.SingleOrDefault(x => x.Id == Id);
     if (item == null)
         return Results.NotFound($"Equipment with Id {Id} not found!");
-    return Results.Ok(item);
+    var equipmentVm = item.Adapt<EquipmentVm>();
+    return Results.Ok(equipmentVm);
 });
+
 
 
 app.Run();
