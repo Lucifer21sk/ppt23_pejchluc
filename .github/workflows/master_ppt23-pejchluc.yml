@@ -8,8 +8,6 @@ on:
     branches:
       - master
   workflow_dispatch:
-env: #proměnné, které můžeme používat dále pomocí env.PUBLISH_DIR	
-  PUBLISH_DIR: exit #výstupní složka kam se vybuildí aplikace (tuhle složku to vytvoří, na názvu nezáleží)
 
 jobs:
   build:
@@ -24,23 +22,17 @@ jobs:
           dotnet-version: '7.x'
           include-prerelease: true
 
-      - name: Determine latest folder # 01,02, atd - najde poslední cvičení	
-        id: latest_folder	
-        run: |	
-          # Get a list of folders in the current directory sorted by name in reverse order	
-          folders=$(ls -d */ | sort -r)	
-          # Set the latest folder as an environment variable	
-          latest_folder=${folders%%/*}	
-          echo "LATEST_FOLDER=$latest_folder" >> $GITHUB_ENV	
-      - name: Publish with dotnet #do určené složky publikuje aplikace, v release configuraci	
-        run: dotnet publish School/Ppt23.Api/Ppt23.Api.csproj --configuration Release --output ${{env.PUBLISH_DIR}}	
-        # ☝️ Upravte dle názvu vašeho .sln
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.PUBLISH_DIR}}
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: ubuntu-latest
@@ -61,5 +53,5 @@ jobs:
         with:
           app-name: 'ppt23-pejchluc'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6A0D803C3D914D618B574E5DD6F93652 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A2047A6A5AF948808C0BCC311487B7F8 }}
           package: .
