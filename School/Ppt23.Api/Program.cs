@@ -5,6 +5,13 @@ using Ppt23.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+string sqliteDbPath = builder.Configuration.GetValue<string>("sqliteDbPath");
+if (string.IsNullOrEmpty(sqliteDbPath))
+{
+    throw new ArgumentNullException(nameof(sqliteDbPath));
+}
+
 builder.Services.AddDbContext<PptDbContext>(opt => opt.UseSqlite("FileName=Hospital.db")); 
 
 // Add services to the container.
@@ -104,7 +111,15 @@ app.MapGet("/hospital-equipment/{Id}", (Guid Id, PptDbContext _db) =>
     return Results.Ok(equipmentVm);
 });
 
-
+using var appContext = app.Services.CreateScope().ServiceProvider.GetRequiredService<PptDbContext>();
+try
+{
+    appContext.Database.Migrate();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Exception during db migration {ex.Message}");
+}
 
 app.Run();
 

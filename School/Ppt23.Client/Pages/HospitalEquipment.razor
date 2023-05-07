@@ -43,6 +43,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await Task.Delay(1000);
         listEquipment = await Http.GetFromJsonAsync<List<EquipmentVm>>("/hospital-equipment") ?? new List<EquipmentVm>();
     }
 
