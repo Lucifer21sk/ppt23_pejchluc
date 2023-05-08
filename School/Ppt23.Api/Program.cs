@@ -14,7 +14,7 @@ if (string.IsNullOrEmpty(sqliteDbPath))
     throw new ArgumentNullException(nameof(sqliteDbPath));
 }
 
-builder.Services.AddDbContext<PptDbContext>(opt => opt.UseSqlite("FileName=Hospital.db")); 
+builder.Services.AddDbContext<PptDbContext>(opt => opt.UseSqlite($"FileName={sqliteDbPath}")); 
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
