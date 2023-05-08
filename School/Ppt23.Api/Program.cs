@@ -42,6 +42,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapGet("/", () => "Hellou");
 
 //get the list
 app.MapGet("/hospital-equipment", (PptDbContext _db) =>
