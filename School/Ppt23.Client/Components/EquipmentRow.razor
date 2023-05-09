@@ -12,15 +12,15 @@
     {
     <div class="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] gap-4 p-2 px-1 py-1 @((Equi.IsRevisionNeeded) ? "bg-red-200" : "")">
         <div class="p-2">
-            <NavLink href="@($"/hospital-equipment/{Equi.Id}")">@Equi.Name</NavLink>
+            <NavLink href="@($"hospital-equipment/{Equi.Id}")">@Equi.Name</NavLink>
         </div>
         <div class="p-2 text-center">@Equi.BoughtDate.ToString("yyyy-MM-dd")</div>
-        <div class="p-2 text-center">@Equi.LastRevisionDate.ToString("yyyy-MM-dd")</div>
+        <div class="p-2 text-center">@((Equi.LastRevisionDate != null) ? Equi.LastRevisionDate.Value.ToString("yyyy-MM-dd") : "N/A")</div>
         <div class="p-2 text-center">@Equi.PriceFormatted</div>
         <div class="p-2 text-center">@((Equi.IsRevisionNeeded) ? "Yes" : "No")</div>
         <div class="flex justify-center">
             <button class="border rounded bg-teal-500 text-white text-sm px-2" @onclick="() => OnDelete.InvokeAsync()">Delete</button>
-            <button class="border rounded bg-teal-700 text-white text-sm px-2 ml-2" @onclick="() => Equi.LastRevisionDate = DateTime.Now">Perform Revision</button>
+            <button class="border rounded bg-teal-700 text-white text-sm px-2 ml-2" @onclick="PerformRevisionClicked">Perform Revision</button>
             <button class="border rounded bg-emerald-300 text-white text-sm px-2 ml-2" @onclick="() => EnableEditMode()">Edit</button>
         </div>
     </div>
@@ -69,6 +69,7 @@ else if (equipment != null)
     [Parameter] public bool IsInEditMode { get; set; }
     [Parameter] public EventCallback<EquipmentVm> OnDelete { get; set; }
     [Parameter] public EventCallback<EquipmentVm> EditDoneEventCallback { get; set; }
+    [Parameter] public EventCallback OnRevision { get; set; }
 
 
 
@@ -94,4 +95,15 @@ else if (equipment != null)
 			Price = Equi.Price
 		};
     }
+   
+    private async Task PerformRevision()
+    {
+        await OnRevision.InvokeAsync();
+    }
+    private async Task PerformRevisionClicked()
+    {
+        await PerformRevision();
+    }
+
+
 }

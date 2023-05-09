@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ppt23.Api.Data;
 
@@ -10,9 +11,11 @@ using Ppt23.Api.Data;
 namespace Ppt23.Api.Migrations
 {
     [DbContext(typeof(PptDbContext))]
-    partial class PptDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230508171417_6")]
+    partial class _6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -51,13 +54,6 @@ namespace Ppt23.Api.Migrations
                             BoughtDate = new DateTime(2016, 3, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Name = "Microscope",
                             Price = 679104
-                        },
-                        new
-                        {
-                            Id = new Guid("0a7959e7-d736-414f-8834-c73c00e12afb"),
-                            BoughtDate = new DateTime(2019, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "X-Ray",
-                            Price = 452610
                         });
                 });
 

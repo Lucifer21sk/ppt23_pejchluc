@@ -2,27 +2,41 @@
 @inject HttpClient Http
 @using Ppt23.Shared
 
-<h3>EquipmentDetail</h3>
-<div>
+<h3 class="bg-emerald-900 text-white py-2 px-4 text-xl">EquipmentDetail</h3>
+<div class="bg-emerald-300 text-black py-4 px-4">
     <p><strong>ID:</strong> @equipment?.Id</p>
     <p><strong>Name:</strong> @equipment?.Name</p>
-    <p><strong>Bought Date:</strong> @equipment?.BoughtDate.ToString("yyyy-MM-dd")</p>
-    <p><strong>Last Revision Date:</strong> @equipment?.LastRevisionDate.ToString("yyyy-MM-dd")</p>
-    <p><strong>Price:</strong> @equipment?.PriceFormatted</p>
-
+    <p><strong>Revisions:</strong></p>
+    <ul>
+        @if (equipmentwrevision?.Revisions != null)
+        {
+            @foreach (var revision in equipmentwrevision.Revisions)
+            {
+                <li>@revision.Name - @(revision.DateTime.ToString("yyyy-MM-dd"))</li>
+            }
+        }
+        else
+        {
+            <li>No revisions found</li>
+        }
+    </ul>
 </div>
 
+
+
 <div class="mt-4">
-    <NavLink href="/hospital-equipment" class="bg-teal-700 text-white font-bold py-2 px-4 rounded mt-3">Back</NavLink>
+    <NavLink href="hospital-equipment" class="bg-teal-700 text-white font-bold py-2 px-4 rounded mt-3">Back</NavLink>
 </div>
 
 @code {
     [Parameter] public Guid Id { get; set; }
     EquipmentVm? equipment;
+    EquipmentWithRevisionsVm? equipmentwrevision;
 
     protected override async Task OnInitializedAsync()
     {
         equipment = await Http.GetFromJsonAsync<EquipmentVm>($"hospital-equipment/{Id}");
+        equipmentwrevision = await Http.GetFromJsonAsync<EquipmentWithRevisionsVm>($"hospital-equipment/{Id}");
     }
 
 }

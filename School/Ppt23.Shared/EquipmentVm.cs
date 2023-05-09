@@ -15,14 +15,14 @@ namespace Ppt23.Shared
         [Required(ErrorMessage = "Last revision date is required")]
         [DataType(DataType.Date, ErrorMessage = "Last revision date is not a valid date")]
         [CustomValidation(typeof(EquipmentVm), nameof(ValidateLastRevisionDate))]
-        public DateTime LastRevisionDate { get; set; }
+        public DateTime? LastRevisionDate { get; set; }
 
         [Required(ErrorMessage = "Price is required")]
         [Range(0, 10000000, ErrorMessage = "Price must be between 0 and 10,000,000")]
         public int Price { get; set; }
         public string PriceFormatted => $"{Price:N0} kč";
 
-        public bool IsRevisionNeeded { get => (DateTime.Now - LastRevisionDate).TotalDays > 730; }
+        public bool IsRevisionNeeded => DateTime.Now - LastRevisionDate > TimeSpan.FromDays(365 * 2);
 
         public static List<EquipmentVm> RtnRndList(int count)
         {

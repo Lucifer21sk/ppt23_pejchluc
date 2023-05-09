@@ -13,6 +13,7 @@ namespace Ppt23.Shared
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public DateTime DateTime { get; set; }
 
         public static List<RevisionVm> GenerateRandomRevisions(int count)
         {

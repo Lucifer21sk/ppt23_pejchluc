@@ -30,7 +30,7 @@
 
     @foreach (EquipmentVm equipment in listEquipment)
     {
-        <EquipmentRow Equi="@equipment" OnDelete="() => DeleteEquipment(equipment)" EditDoneEventCallback="async (updatedEquipment) => await UpdateEquipment(updatedEquipment)"/>
+        <EquipmentRow Equi="@equipment" OnDelete="() => DeleteEquipment(equipment)" EditDoneEventCallback="async (updatedEquipment) => await UpdateEquipment(updatedEquipment)" OnRevision="async () => await PerformRevision(equipment)" />
     }
 
 
@@ -94,4 +94,23 @@
             Console.WriteLine("Failed to create item. Please refresh the page.");
         }
     }
+
+    private async Task PerformRevision(EquipmentVm equipment)
+    {
+        equipment.LastRevisionDate = DateTime.Now;
+
+        HttpResponseMessage response = await Http.PostAsJsonAsync("/revision", equipment);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Console.WriteLine("Revision performed successfully.");
+        }
+        else
+        {
+            Console.WriteLine("Failed to perform revision. Please refresh the page.");
+        }
+
+    }
+
+
 }
