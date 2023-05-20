@@ -13,6 +13,8 @@ namespace Ppt23.Api.Data
         public DateTime BoughtDate { get; set; }
 
         public List<Revision> Revisions { get; set; } = new();
+        public List<Action> Actions { get; set; } = new();
+
 
         public static List<Equipment> RndEquipmentList(int count)
         {
@@ -56,6 +58,22 @@ namespace Ppt23.Api.Data
                     equipment.Revisions.Add(revision);
                 }
 
+                // Generate a random number of actions (1-4) for this equipment
+                var numActions = rand.Next(1, 5);
+                for (int j = 0; j < numActions; j++)
+                {
+                    var action = new Action
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = $"{equipment.Name} Action {j + 1}",
+                        DateTime = DateTime.Now,
+                        Description = $"Action {j + 1} was performed on {equipment.Name}",
+                        EquipmentID = equipment.Id,
+                        Equipment = equipment
+                    };
+                    equipment.Actions.Add(action);
+                }
+
                 equipmentList.Add(equipment);
             }
 
@@ -63,4 +81,6 @@ namespace Ppt23.Api.Data
         }
 
     }
+
 }
+

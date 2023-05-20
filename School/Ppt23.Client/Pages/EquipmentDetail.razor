@@ -12,17 +12,30 @@
         {
             @foreach (var revision in equipmentwrevision.Revisions)
             {
-                <li>@revision.Name - @(revision.DateTime.ToString("yyyy-MM-dd"))</li>
+                        <li>@revision.Name - @(revision.DateTime.ToString("yyyy-MM-dd"))</li>
             }
         }
         else
         {
-            <li>No revisions found</li>
+                <li>No revisions found</li>
+        }
+    </ul>
+    <hr>
+    <h3>Actions:</h3>
+    <ul>
+        @if (actions != null)
+        {
+            @foreach (var action in actions)
+            {
+                        <li>@action.Name - @action.Description - @(action.DateTime.ToString("yyyy-MM-dd HH:mm"))</li>
+            }
+        }
+        else
+        {
+                <li>No actions found</li>
         }
     </ul>
 </div>
-
-
 
 <div class="mt-4">
     <NavLink href="hospital-equipment" class="bg-teal-700 text-white font-bold py-2 px-4 rounded mt-3">Back</NavLink>
@@ -32,11 +45,12 @@
     [Parameter] public Guid Id { get; set; }
     EquipmentVm? equipment;
     EquipmentWithRevisionsVm? equipmentwrevision;
+    List<ActionVm>? actions;
 
     protected override async Task OnInitializedAsync()
     {
         equipment = await Http.GetFromJsonAsync<EquipmentVm>($"hospital-equipment/{Id}");
         equipmentwrevision = await Http.GetFromJsonAsync<EquipmentWithRevisionsVm>($"hospital-equipment/{Id}");
+        actions = await Http.GetFromJsonAsync<List<ActionVm>>($"equipment/{Id}/actions");
     }
-
 }

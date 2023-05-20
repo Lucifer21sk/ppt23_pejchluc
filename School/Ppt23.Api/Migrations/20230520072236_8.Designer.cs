@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ppt23.Api.Data;
 
@@ -10,9 +11,11 @@ using Ppt23.Api.Data;
 namespace Ppt23.Api.Migrations
 {
     [DbContext(typeof(PptDbContext))]
-    partial class PptDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230520072236_8")]
+    partial class _8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
@@ -47,7 +50,7 @@ namespace Ppt23.Api.Migrations
                         new
                         {
                             Id = new Guid("c406ddc7-c8c6-4370-a663-e28827863b78"),
-                            DateTime = new DateTime(2023, 5, 20, 9, 27, 52, 318, DateTimeKind.Local).AddTicks(8509),
+                            DateTime = new DateTime(2023, 5, 20, 9, 22, 36, 534, DateTimeKind.Local).AddTicks(3008),
                             Description = "Injection was performed",
                             EquipmentID = new Guid("cd93f294-e926-4f04-bf3e-d06091f82ccc"),
                             Name = "Injection Action"

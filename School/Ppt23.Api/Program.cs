@@ -63,6 +63,13 @@ app.MapGet("/hospital-equipment", (PptDbContext db) =>
     return equipmentVmList;
 });
 
+app.MapGet("/equipment/{equipmentId}/actions", (Guid equipmentId, PptDbContext dbContext) =>
+{
+    var actions = dbContext.Actions.Where(a => a.EquipmentID == equipmentId).ToList();
+    var actionViewModels = actions.Adapt<List<ActionVm>>();
+    return Results.Ok(actionViewModels);
+});
+
 
 
 //revision
@@ -94,7 +101,6 @@ app.MapPost("/hospital-equipment", (EquipmentVm equipmentVm, PptDbContext _db) =
 
     return Results.Created($"/hospital-equipment/{equipment.Id}", equipment.Adapt<EquipmentVm>());
 });
-
 
 
 
