@@ -23,14 +23,13 @@ namespace Ppt23.Api.Data
                 new Revision() { Id= new Guid("adb6a0a6-80b6-4637-8008-2e7ce2fc7e8e"), Name= "Second", DateTime= new DateTime(2020,04,18), EquipmentId= id1},
                 new Revision() { Id= new Guid("1465be46-5dbf-4c9f-b397-df4c91176eb9"), Name= "First", DateTime= new DateTime(2019,04,18), EquipmentId= id2}
                 );
-            modelBuilder.Entity<Action>().HasData(
-                new Action () { Id= new Guid("c406ddc7-c8c6-4370-a663-e28827863b78"), Name= "Injection Action", DateTime= DateTime.Now, Description= "Injection was performed", EquipmentID= id1}
-                );
+
 
         }
 
         public DbSet<Equipment> Equipment => Set<Equipment>();
         public DbSet<Revision> Revisions => Set<Revision>();
         public DbSet<Action> Actions => Set<Action>();
+        public DbSet<Worker> Workers => Set<Worker>();
     }
 }

@@ -23,18 +23,30 @@
     <hr>
     <h3>Actions:</h3>
     <ul>
-        @if (actions != null)
+    @if (actions != null)
+    {
+        @foreach (var action in actions)
         {
-            @foreach (var action in actions)
-            {
-                        <li>@action.Name - @action.Description - @(action.DateTime.ToString("yyyy-MM-dd HH:mm"))</li>
-            }
+            <li class="@(string.IsNullOrEmpty(action.WorkerName) ? "" : "text-green-500")">
+                <strong>Name:</strong>@action.Name - 
+                <strong>Description:</strong>@action.Description - 
+                <strong>Code:</strong>@action.Code - 
+                <strong>Date:</strong>@(action.DateTime.ToString("yyyy-MM-dd HH:mm")) - 
+                <strong>Worker:</strong>@action.WorkerName
+                @if (!string.IsNullOrEmpty(action.WorkerName))
+                {
+                    <button class="btn btn-primary" @onclick="() => RemoveWorker(action.Id)">Remove Worker</button>
+                }
+            </li>
         }
-        else
-        {
-                <li>No actions found</li>
-        }
-    </ul>
+    }
+    else
+    {
+        <li>No actions found</li>
+    }
+</ul>
+
+
 </div>
 
 <div class="mt-4">
@@ -46,6 +58,16 @@
     EquipmentVm? equipment;
     EquipmentWithRevisionsVm? equipmentwrevision;
     List<ActionVm>? actions;
+
+    private async Task RemoveWorker(Guid actionId)
+    {
+        var response = await Http.PatchAsync($"/action/{actionId}/removeworker", null);
+        if (response.IsSuccessStatusCode)
+        {
+            //console log
+                Console.WriteLine("Worker removed");
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {

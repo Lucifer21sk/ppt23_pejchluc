@@ -9,9 +9,11 @@ namespace Ppt23.Shared
     public class ActionVm
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = "";
+        public string Code { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         public DateTime DateTime { get; set; }
-        public string Description { get; set; }
-        public Guid EquipmentID { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public string WorkerName { get; set; } = string.Empty;
+
     }
 }

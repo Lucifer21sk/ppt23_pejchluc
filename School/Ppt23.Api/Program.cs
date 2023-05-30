@@ -1,9 +1,11 @@
 using Mapster;
+using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Ppt23.Api.Data;
 using Ppt23.Shared;
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,10 +67,24 @@ app.MapGet("/hospital-equipment", (PptDbContext db) =>
 
 app.MapGet("/equipment/{equipmentId}/actions", (Guid equipmentId, PptDbContext dbContext) =>
 {
-    var actions = dbContext.Actions.Where(a => a.EquipmentID == equipmentId).ToList();
-    var actionViewModels = actions.Adapt<List<ActionVm>>();
+    var actions = dbContext.Actions
+        .Include(a => a.Worker) // Include the Worker entity
+        .Where(a => a.EquipmentID == equipmentId)
+        .ToList();
+
+    var actionViewModels = actions.Select(a => new ActionVm
+    {
+        Id = a.Id,
+        Code = a.Code,
+        Name = a.Name,
+        DateTime = a.DateTime,
+        Description = a.Description,
+        WorkerName = a.Worker?.Name ?? string.Empty // Get the Worker's name or an empty string if the Worker is null
+    }).ToList();
+
     return Results.Ok(actionViewModels);
 });
+
 
 
 
@@ -100,6 +116,94 @@ app.MapPost("/hospital-equipment", (EquipmentVm equipmentVm, PptDbContext _db) =
     _db.SaveChanges();
 
     return Results.Created($"/hospital-equipment/{equipment.Id}", equipment.Adapt<EquipmentVm>());
+});
+
+app.MapPost("/seed", (PptDbContext _db) =>
+{
+    // Step 1: Generate 10 random workers
+    List<Worker> generatedWorkers = new List<Worker>();
+    Random random = new Random();
+
+    for (int i = 0; i < 10; i++)
+    {
+        Worker worker = new Worker
+        {
+            Name = Worker.GenerateRandomName(),
+            JobTitle = Worker.GenerateRandomJobTitle()
+        };
+
+        generatedWorkers.Add(worker);
+        _db.Workers.Add(worker);
+    }
+
+    _db.SaveChanges();
+
+    // Step 2: Retrieve all equipment instances from the database
+    List<Equipment> equipments = _db.Equipment.ToList();
+
+    // Create a list to store the generated action view models
+    List<ActionVm> generatedActions = new List<ActionVm>();
+
+    foreach (Equipment equipment in equipments)
+    {
+        // Step 3: Create 5 to 20 random actions for each equipment
+        int numActions = random.Next(5, 21);
+        var actions = generatedWorkers.Select(worker => worker.Id).ToList();
+
+        for (int i = 0; i < numActions; i++)
+        {
+            Ppt23.Api.Data.Action action = new Ppt23.Api.Data.Action
+            {
+                Name = Ppt23.Api.Data.Action.GenerateRandomName(),
+                Code = Ppt23.Api.Data.Action.GenerateRandomCode(),
+                Description = Ppt23.Api.Data.Action.GenerateRandomDescription(),
+                DateTime = Ppt23.Api.Data.Action.GenerateRandomDateTime(),
+                EquipmentID = equipment.Id
+            };
+
+            if (i < actions.Count)
+            {
+                action.WorkerID = actions[i];
+            }
+
+            _db.Actions.Add(action);
+
+            // Convert the Action to ActionVm and add it to the generatedActions list
+            ActionVm actionVm = new ActionVm
+            {
+                Id = action.Id,
+                Code = action.Code,
+                Name = action.Name,
+                DateTime = action.DateTime,
+                Description = action.Description,
+                WorkerName = generatedWorkers.FirstOrDefault(w => w.Id == action.WorkerID)?.Name ?? string.Empty
+            };
+
+            generatedActions.Add(actionVm);
+        }
+    }
+
+    _db.SaveChanges();
+
+    return Results.Ok(generatedActions);
+});
+
+
+app.MapPatch("/action/{id:guid}/removeworker", (Guid id, PptDbContext _db) =>
+{
+    var action = _db.Actions.FirstOrDefault(a => a.Id == id);
+
+    if (action == null)
+    {
+        return Results.NotFound();
+    }
+
+    // Remove the worker from the action
+    action.WorkerID = Guid.Empty;
+
+    _db.SaveChanges();
+
+    return Results.Ok();
 });
 
 
@@ -153,13 +257,6 @@ app.MapPut("/hospital-equipment/{Id}", (Guid Id, EquipmentVm updatedEquipment, P
         return Results.Ok();
     }
 });
-
-
-
-
-
-
-
 
 
 //get only specific item from list, need Id

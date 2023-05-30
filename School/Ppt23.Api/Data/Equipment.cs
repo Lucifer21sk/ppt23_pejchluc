@@ -21,6 +21,20 @@ namespace Ppt23.Api.Data
             var rand = new Random();
             var equipmentList = new List<Equipment>();
 
+            // Step 1: Generate 10 random workers
+            var generatedWorkers = new List<Worker>();
+            for (int i = 0; i < 10; i++)
+            {
+                var worker = new Worker
+                {
+                    Id = Guid.NewGuid(),
+                    Name = Worker.GenerateRandomName(),
+                    JobTitle = Worker.GenerateRandomJobTitle()
+                };
+
+                generatedWorkers.Add(worker);
+            }
+
             for (int i = 1; i <= count; i++)
             {
                 var name = "";
@@ -60,6 +74,8 @@ namespace Ppt23.Api.Data
 
                 // Generate a random number of actions (1-4) for this equipment
                 var numActions = rand.Next(1, 5);
+                var actions = generatedWorkers.Select(worker => worker.Id).ToList();
+
                 for (int j = 0; j < numActions; j++)
                 {
                     var action = new Action
@@ -71,14 +87,22 @@ namespace Ppt23.Api.Data
                         EquipmentID = equipment.Id,
                         Equipment = equipment
                     };
+
+                    if (j < actions.Count)
+                    {
+                        action.WorkerID = actions[j];
+                    }
+
                     equipment.Actions.Add(action);
                 }
+
 
                 equipmentList.Add(equipment);
             }
 
             return equipmentList;
         }
+
 
     }
 
